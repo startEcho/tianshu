@@ -1,0 +1,27 @@
+server:
+  port: 8082 # Port for this service
+
+spring:
+  application:
+    name: lab-orchestration-service
+
+platform:
+  ingress:
+    base-url: http://localhost
+
+vulnerability-definition-service:
+  url: ${VULNERABILITY_DEFINITION_SERVICE_URL:http://localhost:8081} # Default for local if env var not present
+
+minikube:
+  ip: ${MINIKUBE_IP_ENV:192.168.49.2}
+
+# Kubernetes client configuration (Fabric8 client usually auto-configures from ~/.kube/config or in-cluster service account)
+# No explicit K8s client config needed for Fabric8 usually, it discovers automatically.
+# For Spring Cloud Kubernetes, you might need:
+# spring:
+#   cloud:
+#     kubernetes:
+#       client:
+#         namespace: default # Or some other namespace where labs will be launched
+#       discovery:
+#         enabled: false # If not using Spring Cloud K8s for service discovery within this app

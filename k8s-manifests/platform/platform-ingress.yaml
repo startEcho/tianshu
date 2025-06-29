@@ -1,0 +1,32 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: tianshu-platform-ingress
+  namespace: default
+  annotations:
+    nginx.ingress.kubernetes.io/rewrite-target: /$2 # To strip prefix if needed
+    nginx.ingress.kubernetes.io/cors-allow-origin: "http://localhost:3000" # 您前端的地址
+    nginx.ingress.kubernetes.io/cors-allow-methods: "GET, PUT, POST, DELETE, OPTIONS" # 允许的方法
+    nginx.ingress.kubernetes.io/cors-allow-headers: "DNT,User-Agent,X-Requested-With,If-Modified-Since,Cache-Control,Content-Type,Range,Authorization" # 允许的请求头，可以根据需要调整
+    nginx.ingress.kubernetes.io/cors-allow-credentials: "true" # 如果前端需要发送凭据 (如cookies)
+    nginx.ingress.kubernetes.io/enable-cors: "true" # 明确启用CORS
+    # Or if your services handle the full path:
+    # nginx.ingress.kubernetes.io/rewrite-target: /$1$2
+spec:
+  rules:
+    - http:
+        paths:
+          - path: /definitions(/|$)(.*) # Matches /definitions, /definitions/, /definitions/anything
+            pathType: ImplementationSpecific # Or Prefix
+            backend:
+              service:
+                name: vuln-def-service-svc
+                port:
+                  number: 8081 # Port of vuln-def-service-svc
+          - path: /orchestration(/|$)(.*) # Matches /orchestration, /orchestration/, /orchestration/anything
+            pathType: ImplementationSpecific # Or Prefix
+            backend:
+              service:
+                name: lab-orchestration-service-svc
+                port:
+                  number: 8082 # Port of lab-orchestration-service-svc

@@ -1,0 +1,45 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: lab-orchestration-service-deployment
+  namespace: default # Ensure this matches RBAC configurations
+  labels:
+    app: lab-orchestration-service
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: lab-orchestration-service
+  template:
+    metadata:
+      labels:
+        app: lab-orchestration-service
+    spec:
+      serviceAccountName: lab-orchestrator-sa # IMPORTANT: Use the ServiceAccount created above
+      containers:
+        - name: lab-orchestration-container
+          image: tianshuvuln/lab-orchestration-service:0.1.8 # Your image
+          imagePullPolicy: IfNotPresent # Or Always
+          ports:
+            - containerPort: 8082 # Port the app listens on
+          env:
+            - name: VULNERABILITY_DEFINITION_SERVICE_URL
+              # Use Kubernetes internal DNS name for service-to-service communication
+              # Format: http://<service-name>.<namespace>.svc.cluster.local:<port>
+              # Our vuln-def-service-svc is in 'default' namespace, service name 'vuln-def-service-svc', port 8081
+              value: "http://vuln-def-service-svc.default.svc.cluster.local:8081"
+            - name: MINIKUBE_IP # This might not be strictly needed if URL construction is handled by frontend or ingress later
+              value: "192.168.49.2" # Or dynamically discovered if possible, or removed if frontend constructs full URL
+          # (Optional but recommended) Health Probes
+          # livenessProbe:
+          #   httpGet:
+          #     path: /actuator/health/liveness
+          #     port: 8082
+          #   initialDelaySeconds: 45
+          #   periodSeconds: 15
+          # readinessProbe:
+          #   httpGet:
+          #     path: /actuator/health/readiness
+          #     port: 8082
+          #   initialDelaySeconds: 30
+          #   periodSeconds: 10

@@ -1,0 +1,17 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: lab-orchestration-service-svc
+  namespace: default
+  labels:
+    app: lab-orchestration-service
+spec:
+  type: ClusterIP # For initial access from outside the cluster
+  selector:
+    app: lab-orchestration-service # Must match labels of the Deployment's Pods
+  ports:
+    - name: http
+      protocol: TCP
+      port: 8082       # Service's port within the cluster
+      targetPort: 8082 # Container port lab-orchestration-service listens on
+      # nodePort: 30082 # Optional: specify NodePort, or let K8s assign one

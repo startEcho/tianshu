@@ -1,0 +1,36 @@
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: lab-orchestrator-sa # ServiceAccount name
+  namespace: default # Or the namespace where you'll deploy the service
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  namespace: default # Same namespace as ServiceAccount and where labs will be managed
+  name: lab-orchestrator-role
+rules:
+  - apiGroups: [ "apps" ] # For Deployments
+    resources: [ "deployments" ]
+    verbs: [ "get", "list", "watch", "create", "delete", "update", "patch" ]
+  - apiGroups: [ "" ] # For core API group (Services, Pods)
+    resources: [ "services", "pods" ] # Added pods for potential future use
+    verbs: [ "get", "list", "watch", "create", "delete", "update", "patch" ]
+  - apiGroups: [ "networking.k8s.io" ] # Permissions for Ingress resources
+    resources: [ "ingresses" ]
+    verbs: [ "get", "list", "watch", "create", "delete", "update", "patch" ]
+# Add more permissions here if needed in the future (e.g., for ConfigMaps, Secrets)
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: lab-orchestrator-rolebinding
+  namespace: default # Same namespace
+subjects:
+  - kind: ServiceAccount
+    name: lab-orchestrator-sa # Name of the ServiceAccount
+    namespace: default
+roleRef:
+  kind: Role # This must be Role or ClusterRole
+  name: lab-orchestrator-role # Name of the Role defined above
+  apiGroup: rbac.authorization.k8s.io

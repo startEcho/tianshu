@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>SQLi Vulnerable App</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; background-color: #f4f4f4; color: #333; }
+        .container { background-color: #fff; padding: 20px; border-radius: 8px; box-shadow: 0 0 10px rgba(0,0,0,0.1); }
+        h1, h2 { color: #0056b3; }
+        form { margin-bottom: 20px; }
+        label { margin-right: 10px; }
+        input[type="text"] { padding: 8px; border: 1px solid #ccc; border-radius: 4px; }
+        input[type="submit"] { padding: 8px 15px; background-color: #007bff; color: white; border: none; border-radius: 4px; cursor: pointer; }
+        input[type="submit"]:hover { background-color: #0056b3; }
+        .results, .users-list { margin-top: 20px; padding: 10px; border: 1px solid #ddd; border-radius: 4px; }
+        .results h3, .users-list h3 { margin-top: 0; }
+        ul { list-style-type: none; padding: 0; }
+        li { background-color: #e9ecef; margin-bottom: 5px; padding: 8px; border-radius: 4px; }
+        .error { color: red; font-weight: bold; }
+        .sql-query { background-color: #222; color: #0f0; padding: 10px; border-radius: 5px; margin-top:10px; font-family: monospace; white-space: pre-wrap; }
+        .tip { background-color: #fff3cd; border: 1px solid #ffeeba; color: #856404; padding: 10px; border-radius: 4px; margin-top: 20px;}
+    </style>
+</head>
+<body>
+<div class="container">
+    <h1>User Search (SQLi Vulnerable)</h1>
+    <form action="search" method="get">
+        <label for="username">Username:</label>
+        <input type="text" id="username" name="username" th:value="${queryUsername}">
+        <input type="submit" value="Search">
+    </form>
+
+    <div th:if="${executedSql}" class="sql-query">
+        <strong>Executed SQL:</strong>
+        <p th:text="${executedSql}"></p>
+    </div>
+
+    <div th:if="${message}" th:text="${message}" class="message"></div>
+    <div th:if="${error}" th:text="${error}" class="error"></div>
+
+    <div th:if="${results}" class="results">
+        <h3>Search Results:</h3>
+        <ul>
+            <li th:each="user : ${results}">
+                ID: <span th:text="${user.id}"></span>,
+                Username: <span th:text="${user.username}"></span>,
+                Info: <span th:text="${user.info}"></span>
+            </li>
+        </ul>
+    </div>
+
+    <div class="tip">
+        <h4>SQL Injection Tips:</h4>
+        <p>Try searching for usernames like:</p>
+        <ul>
+            <li><code>' OR '1'='1</code></li>
+            <li><code>admin' -- </code></li>
+            <li><code>' UNION SELECT null, username, password FROM users WHERE username='admin</code> (You might need to adjust column counts/types for a UNION based attack if the table structure was unknown)</li>
+            <li><code>' UNION SELECT null, GROUP_CONCAT(table_name), null FROM information_schema.tables WHERE table_schema=DATABASE() -- </code> (H2 specific, might vary for other DBs)</li>
+        </ul>
+    </div>
+
+    <div class="users-list" th:if="${users != null && !users.isEmpty()}">
+        <h3>All Users in DB (Loaded Safely):</h3>
+        <ul>
+            <li th:each="user : ${users}">
+                ID: <span th:text="${user.id}"></span>,
+                Username: <span th:text="${user.username}"></span>,
+                Info: <span th:text="${user.info}"></span>
+            </li>
+        </ul>
+    </div>
+</div>
+</body>
+</html>
