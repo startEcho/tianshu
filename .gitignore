@@ -31,3 +31,44 @@ build/
 
 ### VS Code ###
 .vscode/
+
+
+# dependencies
+tian-shu-frontend/node_modules
+tian-shu-frontend/.pnp
+tian-shu-frontend/.pnp.*
+tian-shu-frontend/.yarn/*
+tian-shu-frontend/!.yarn/patches
+tian-shu-frontend/!.yarn/plugins
+tian-shu-frontend/!.yarn/releases
+tian-shu-frontend/!.yarn/versions
+
+# testing
+tian-shu-frontend/coverage
+
+# next.js
+tian-shu-frontend/.next/
+tian-shu-frontend/out/
+
+# production
+tian-shu-frontend/build
+
+# misc
+tian-shu-frontend/.DS_Store
+tian-shu-frontend/*.pem
+
+# debug
+tian-shu-frontend/npm-debug.log*
+tian-shu-frontend/yarn-debug.log*
+tian-shu-frontend/yarn-error.log*
+tian-shu-frontend/.pnpm-debug.log*
+
+# env files (can opt-in for committing if needed)
+tian-shu-frontend/.env*
+
+# vercel
+tian-shu-frontend/.vercel
+
+# typescript
+tian-shu-frontend/*.tsbuildinfo
+tian-shu-frontend/next-env.d.ts

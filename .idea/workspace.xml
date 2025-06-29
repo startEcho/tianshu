@@ -4,10 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="92da87e9-28dc-493e-97ba-9ae9d43d4951" name="更改" comment="天枢漏洞平台 初始版本">
-      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.mvn/wrapper/maven-wrapper.properties" beforeDir="false" afterPath="$PROJECT_DIR$/backend/.mvn/wrapper/maven-wrapper.properties" afterDir="false" />
-    </list>
+    <list default="true" id="92da87e9-28dc-493e-97ba-9ae9d43d4951" name="更改" comment="天枢漏洞平台 初始版本" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -110,7 +107,7 @@
     "node.js.selected.package.eslint": "(autodetect)",
     "node.js.selected.package.tslint": "(autodetect)",
     "nodejs_package_manager_path": "npm",
-    "project.structure.last.edited": "问题",
+    "project.structure.last.edited": "模块",
     "project.structure.proportion": "0.15",
     "project.structure.side.proportion": "0.2",
     "settings.editor.selected.configurable": "reference.projectsettings.compiler.javacompiler",
@@ -320,7 +317,7 @@
       <workItem from="1747188104621" duration="17038000" />
       <workItem from="1748255961189" duration="14210000" />
       <workItem from="1748353800013" duration="8405000" />
-      <workItem from="1751185914418" duration="21398000" />
+      <workItem from="1751185914418" duration="21964000" />
     </task>
     <task id="LOCAL-00001" summary="天枢漏洞平台 初始版本">
       <option name="closed" value="true" />
