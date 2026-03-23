@@ -1,0 +1,120 @@
+name: tianshu-infra
+
+services:
+  nacos:
+    image: nacos-registry.cn-hangzhou.cr.aliyuncs.com/nacos/nacos-server:v2.3.2
+    platform: linux/amd64
+    container_name: tianshu-nacos
+    restart: unless-stopped
+    environment:
+      MODE: standalone
+      NACOS_AUTH_ENABLE: "false"
+      JVM_XMS: 256m
+      JVM_XMX: 256m
+      JVM_XMN: 128m
+    ports:
+      - "8848:8848"
+      - "9848:9848"
+      - "9849:9849"
+    volumes:
+      - ./docker-data/nacos/logs:/home/nacos/logs
+      - ./docker-data/nacos/data:/home/nacos/data
+
+  postgres:
+    image: postgres:16
+    container_name: tianshu-postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER:-tianshu}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-tianshu_pwd}
+      POSTGRES_DB: ${POSTGRES_DEFAULT_DB:-postgres}
+      TZ: Asia/Shanghai
+    ports:
+      - "5432:5432"
+    volumes:
+      - ./docker-data/postgres:/var/lib/postgresql/data
+      - ./ops/postgres/init:/docker-entrypoint-initdb.d:ro
+
+  redis:
+    image: redis:7
+    container_name: tianshu-redis
+    restart: unless-stopped
+    ports:
+      - "6379:6379"
+    command: redis-server --appendonly yes
+    volumes:
+      - ./docker-data/redis:/data
+
+  rabbitmq:
+    image: rabbitmq:3.13-management
+    container_name: tianshu-rabbitmq
+    restart: unless-stopped
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+
+  zipkin:
+    image: openzipkin/zipkin:3.5
+    container_name: tianshu-zipkin
+    restart: unless-stopped
+    ports:
+      - "9411:9411"
+
+  loki:
+    image: grafana/loki:3.2.1
+    container_name: tianshu-loki
+    restart: unless-stopped
+    command: -config.file=/etc/loki/config.yml
+    ports:
+      - "3100:3100"
+    volumes:
+      - ./ops/loki/loki-config.yml:/etc/loki/config.yml:ro
+      - ./docker-data/loki:/loki
+
+  promtail:
+    image: grafana/promtail:3.2.1
+    container_name: tianshu-promtail
+    restart: unless-stopped
+    command: -config.file=/etc/promtail/config.yml
+    volumes:
+      - ./ops/promtail/promtail-config.yml:/etc/promtail/config.yml:ro
+      - ./logs:/var/log/tianshu
+      - ./docker-data/promtail:/tmp/promtail
+    depends_on:
+      - loki
+
+  prometheus:
+    image: prom/prometheus:v2.53.4
+    container_name: tianshu-prometheus
+    restart: unless-stopped
+    command:
+      - --config.file=/etc/prometheus/prometheus.yml
+      - --storage.tsdb.path=/prometheus
+    ports:
+      - "9090:9090"
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    volumes:
+      - ./ops/prometheus/prometheus.yml:/etc/prometheus/prometheus.yml:ro
+      - ./docker-data/prometheus:/prometheus
+    depends_on:
+      - zipkin
+
+  grafana:
+    image: grafana/grafana:11.2.0
+    container_name: tianshu-grafana
+    restart: unless-stopped
+    environment:
+      GF_SECURITY_ADMIN_USER: ${GRAFANA_ADMIN_USER:-admin}
+      GF_SECURITY_ADMIN_PASSWORD: ${GRAFANA_ADMIN_PASSWORD:-admin}
+      GF_USERS_ALLOW_SIGN_UP: "false"
+      GF_AUTH_ANONYMOUS_ENABLED: "false"
+    ports:
+      - "3001:3000"
+    volumes:
+      - ./ops/grafana/provisioning:/etc/grafana/provisioning:ro
+      - ./ops/grafana/dashboards:/var/lib/grafana/dashboards:ro
+      - ./docker-data/grafana:/var/lib/grafana
+    depends_on:
+      - prometheus
+      - loki

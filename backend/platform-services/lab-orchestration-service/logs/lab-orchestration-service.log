@@ -1,0 +1,37 @@
+2026-03-09 21:23:55.874 trace= span= INFO  [main] c.c.l.LabOrchestrationServiceApplicationTests - Starting LabOrchestrationServiceApplicationTests using Java 17.0.18 with PID 15960 (started by liu in /Volumes/PSSD/document/JavaApplication/saasplatform/tianshu/backend/platform-services/lab-orchestration-service)
+2026-03-09 21:23:55.875 trace= span= INFO  [main] c.c.l.LabOrchestrationServiceApplicationTests - No active profile set, falling back to 1 default profile: "default"
+2026-03-09 21:23:56.431 trace= span= INFO  [main] o.s.d.r.c.RepositoryConfigurationDelegate - Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2026-03-09 21:23:56.457 trace= span= INFO  [main] o.s.d.r.c.RepositoryConfigurationDelegate - Finished Spring Data repository scanning in 21 ms. Found 2 JPA repository interfaces.
+2026-03-09 21:23:56.577 trace= span= INFO  [main] o.s.cloud.context.scope.GenericScope - BeanFactory id=c4125015-b43f-37a8-8f58-4aa320776a33
+2026-03-09 21:23:56.886 trace= span= INFO  [main] com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Starting...
+2026-03-09 21:23:56.993 trace= span= INFO  [main] com.zaxxer.hikari.pool.HikariPool - HikariPool-1 - Added connection org.postgresql.jdbc.PgConnection@43294e9b
+2026-03-09 21:23:56.994 trace= span= INFO  [main] com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Start completed.
+2026-03-09 21:23:57.010 trace= span= INFO  [main] org.flywaydb.core.FlywayExecutor - Database: jdbc:postgresql://127.0.0.1:5432/tianshu_lab (PostgreSQL 16.13)
+2026-03-09 21:23:57.053 trace= span= INFO  [main] o.f.core.internal.command.DbValidate - Successfully validated 3 migrations (execution time 00:00.020s)
+2026-03-09 21:23:57.082 trace= span= INFO  [main] o.f.core.internal.command.DbMigrate - Current version of schema "public": 3
+2026-03-09 21:23:57.084 trace= span= INFO  [main] o.f.core.internal.command.DbMigrate - Schema "public" is up to date. No migration necessary.
+2026-03-09 21:23:57.174 trace= span= INFO  [main] o.h.jpa.internal.util.LogHelper - HHH000204: Processing PersistenceUnitInfo [name: default]
+2026-03-09 21:23:57.201 trace= span= INFO  [main] org.hibernate.Version - HHH000412: Hibernate ORM core version 6.6.13.Final
+2026-03-09 21:23:57.218 trace= span= INFO  [main] o.h.c.i.RegionFactoryInitiator - HHH000026: Second-level cache disabled
+2026-03-09 21:23:57.359 trace= span= INFO  [main] o.s.o.j.p.SpringPersistenceUnitInfo - No LoadTimeWeaver setup: ignoring JPA class transformer
+2026-03-09 21:23:57.461 trace= span= INFO  [main] o.hibernate.orm.connections.pooling - HHH10001005: Database info:
+	Database JDBC URL [Connecting through datasource 'HikariDataSource (HikariPool-1)']
+	Database driver: undefined/unknown
+	Database version: 16.13
+	Autocommit mode: undefined/unknown
+	Isolation level: undefined/unknown
+	Minimum pool size: undefined/unknown
+	Maximum pool size: undefined/unknown
+2026-03-09 21:23:57.862 trace= span= INFO  [main] o.h.e.t.j.p.i.JtaPlatformInitiator - HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2026-03-09 21:23:57.902 trace= span= INFO  [main] o.s.o.j.LocalContainerEntityManagerFactoryBean - Initialized JPA EntityManagerFactory for persistence unit 'default'
+2026-03-09 21:23:58.692 trace= span= INFO  [main] c.c.l.service.KubernetesService - Kubernetes client initialized. Namespace: default
+2026-03-09 21:23:58.843 trace= span= INFO  [main] o.s.d.j.r.query.QueryEnhancerFactory - Hibernate is in classpath; If applicable, HQL parser will be used.
+2026-03-09 21:23:59.659 trace= span= INFO  [main] o.s.b.a.e.web.EndpointLinksResolver - Exposing 2 endpoints beneath base path '/actuator'
+2026-03-09 21:24:00.107 trace= span= INFO  [main] o.s.a.r.c.CachingConnectionFactory - Attempting to connect to: [127.0.0.1:5672]
+2026-03-09 21:24:00.136 trace= span= INFO  [main] o.s.a.r.c.CachingConnectionFactory - Created new connection: rabbitConnectionFactory#34b846a1:0/SimpleConnection@77652fc6 [delegate=amqp://guest@127.0.0.1:5672/, localPort=51525]
+2026-03-09 21:24:00.226 trace= span= INFO  [main] c.c.l.LabOrchestrationServiceApplicationTests - Started LabOrchestrationServiceApplicationTests in 4.559 seconds (process running for 5.156)
+2026-03-09 21:24:00.774 trace= span= INFO  [org.springframework.amqp.rabbit.RabbitListenerEndpointContainer#0-2] o.s.a.r.l.SimpleMessageListenerContainer - Waiting for workers to finish.
+2026-03-09 21:24:01.170 trace= span= INFO  [org.springframework.amqp.rabbit.RabbitListenerEndpointContainer#0-2] o.s.a.r.l.SimpleMessageListenerContainer - Successfully waited for workers to finish.
+2026-03-09 21:24:01.191 trace= span= INFO  [SpringApplicationShutdownHook] o.s.o.j.LocalContainerEntityManagerFactoryBean - Closing JPA EntityManagerFactory for persistence unit 'default'
+2026-03-09 21:24:01.192 trace= span= INFO  [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown initiated...
+2026-03-09 21:24:01.194 trace= span= INFO  [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown completed.

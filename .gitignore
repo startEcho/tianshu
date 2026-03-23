@@ -3,6 +3,8 @@ target/
 !backend/.mvn/wrapper/maven-wrapper.jar
 !**/src/main/**/target/
 !**/src/test/**/target/
+.DS_Store
+.gitattributes
 
 ### STS ###
 .apt_generated
@@ -14,7 +16,11 @@ target/
 .sts4-cache
 
 ### IntelliJ IDEA ###
-backend/.idea
+*/.idea
+*/.gitignore
+*/.DS_Store
+*/docs
+.idea
 *.iws
 *.iml
 *.ipr

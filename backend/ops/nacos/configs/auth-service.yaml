@@ -1,0 +1,33 @@
+server:
+  port: 8083
+
+spring:
+  application:
+    name: auth-service
+  datasource:
+    url: ${AUTH_DB_URL:jdbc:postgresql://127.0.0.1:5432/tianshu_auth}
+    username: ${AUTH_DB_USERNAME:tianshu}
+    password: ${AUTH_DB_PASSWORD:tianshu_pwd}
+  data:
+    redis:
+      host: ${REDIS_HOST:127.0.0.1}
+      port: ${REDIS_PORT:6379}
+  flyway:
+    enabled: true
+
+security:
+  jwt:
+    secret: ${JWT_SECRET:tianshu-jwt-secret-key-please-change-in-production-1234567890}
+    issuer: ${JWT_ISSUER:tianshu-platform}
+
+platform:
+  bootstrap:
+    admin-username: ${PLATFORM_ADMIN_USERNAME:admin}
+    admin-password: ${PLATFORM_ADMIN_PASSWORD:Admin123456}
+    trainer-password: ${PLATFORM_TRAINER_PASSWORD:Trainer123456}
+    student-password: ${PLATFORM_STUDENT_PASSWORD:Student123456}
+
+management:
+  zipkin:
+    tracing:
+      endpoint: ${ZIPKIN_ENDPOINT:http://127.0.0.1:9411/api/v2/spans}
