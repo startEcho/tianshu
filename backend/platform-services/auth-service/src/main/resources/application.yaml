@@ -1,0 +1,64 @@
+server:
+  port: 8083
+
+spring:
+  application:
+    name: auth-service
+  datasource:
+    url: ${AUTH_DB_URL:jdbc:postgresql://127.0.0.1:5432/tianshu_auth}
+    username: ${AUTH_DB_USERNAME:tianshu}
+    password: ${AUTH_DB_PASSWORD:tianshu_pwd}
+    driver-class-name: org.postgresql.Driver
+  data:
+    redis:
+      host: ${REDIS_HOST:127.0.0.1}
+      port: ${REDIS_PORT:6379}
+  jpa:
+    hibernate:
+      ddl-auto: validate
+    open-in-view: false
+    properties:
+      hibernate:
+        format_sql: true
+  flyway:
+    enabled: true
+  jackson:
+    serialization:
+      write-dates-as-timestamps: false
+
+security:
+  jwt:
+    secret: ${JWT_SECRET:tianshu-jwt-secret-key-please-change-in-production-1234567890}
+    issuer: ${JWT_ISSUER:tianshu-platform}
+    access-token-ttl: ${JWT_ACCESS_TOKEN_TTL:15m}
+    refresh-token-ttl: ${JWT_REFRESH_TOKEN_TTL:7d}
+
+platform:
+  bootstrap:
+    admin-username: ${PLATFORM_ADMIN_USERNAME:admin}
+    admin-password: ${PLATFORM_ADMIN_PASSWORD:Admin123456}
+    trainer-password: ${PLATFORM_TRAINER_PASSWORD:Trainer123456}
+    student-password: ${PLATFORM_STUDENT_PASSWORD:Student123456}
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,prometheus
+  endpoint:
+    health:
+      probes:
+        enabled: true
+  tracing:
+    sampling:
+      probability: 1.0
+  zipkin:
+    tracing:
+      endpoint: ${ZIPKIN_ENDPOINT:http://127.0.0.1:9411/api/v2/spans}
+
+logging:
+  file:
+    name: ${LOG_FILE:logs/auth-service.log}
+  pattern:
+    console: "%d{yyyy-MM-dd HH:mm:ss.SSS} trace=%X{traceId:-} span=%X{spanId:-} %-5level [%thread] %logger{36} - %msg%n"
+    file: "%d{yyyy-MM-dd HH:mm:ss.SSS} trace=%X{traceId:-} span=%X{spanId:-} %-5level [%thread] %logger{36} - %msg%n"

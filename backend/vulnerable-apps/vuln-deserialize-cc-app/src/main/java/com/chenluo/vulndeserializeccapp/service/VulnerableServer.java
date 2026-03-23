@@ -7,7 +7,18 @@ import java.io.ObjectInputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
 
+/**
+ * Demo socket server that deserializes untrusted input.
+ *
+ * <p>This class exists only for security lab demonstration.
+ */
 public class VulnerableServer {
+
+    /**
+     * Starts a blocking TCP server and deserializes received objects.
+     *
+     * @param args process arguments
+     */
     public static void main(String[] args) {
         int port = 9999;
         try (ServerSocket serverSocket = new ServerSocket(port)) {
@@ -19,20 +30,17 @@ public class VulnerableServer {
                     System.out.println("Client connected: " + clientSocket.getInetAddress());
                     System.out.println("Attempting to read object...");
 
-                    // 反序列化对象
-                    Object receivedObject = ois.readObject(); // 漏洞触发点
-
+                    Object receivedObject = ois.readObject();
                     System.out.println("Object received and deserialized: " + receivedObject);
 
                     if (receivedObject instanceof User) {
                         User user = (User) receivedObject;
-                        // 此时 User 的 readObject 可能已经执行了恶意代码
                         System.out.println("User details: " + user.name + ", " + user.age + ", role: " + user.role);
                     }
 
                 } catch (IOException | ClassNotFoundException e) {
                     System.err.println("Error during client interaction: " + e.getMessage());
-                    e.printStackTrace(); // 打印完整堆栈，方便调试
+                    e.printStackTrace();
                 }
             }
         } catch (IOException e) {

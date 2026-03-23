@@ -1,0 +1,55 @@
+server:
+  port: 8080
+
+spring:
+  application:
+    name: gateway-service
+  cloud:
+    gateway:
+      default-filters:
+        - DedupeResponseHeader=Access-Control-Allow-Origin Access-Control-Allow-Credentials
+      routes:
+        - id: auth-api
+          uri: ${services.auth.url:http://127.0.0.1:8083}
+          predicates:
+            - Path=/api/v1/auth/**,/api/v1/users/**,/api/v1/roles/**
+        - id: definition-api
+          uri: ${services.definition.url:http://127.0.0.1:8081}
+          predicates:
+            - Path=/api/v1/definitions/**
+        - id: lab-api
+          uri: ${services.lab.url:http://127.0.0.1:8082}
+          predicates:
+            - Path=/api/v1/labs/**
+
+security:
+  jwt:
+    secret: ${JWT_SECRET:tianshu-jwt-secret-key-please-change-in-production-1234567890}
+    issuer: ${JWT_ISSUER:tianshu-platform}
+    access-token-ttl: ${JWT_ACCESS_TOKEN_TTL:15m}
+    refresh-token-ttl: ${JWT_REFRESH_TOKEN_TTL:7d}
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,prometheus,gateway
+  endpoint:
+    gateway:
+      access: unrestricted
+    health:
+      probes:
+        enabled: true
+  tracing:
+    sampling:
+      probability: 1.0
+  zipkin:
+    tracing:
+      endpoint: ${ZIPKIN_ENDPOINT:http://127.0.0.1:9411/api/v2/spans}
+
+logging:
+  file:
+    name: ${LOG_FILE:logs/gateway-service.log}
+  pattern:
+    console: "%d{yyyy-MM-dd HH:mm:ss.SSS} trace=%X{traceId:-} span=%X{spanId:-} %-5level [%thread] %logger{36} - %msg%n"
+    file: "%d{yyyy-MM-dd HH:mm:ss.SSS} trace=%X{traceId:-} span=%X{spanId:-} %-5level [%thread] %logger{36} - %msg%n"

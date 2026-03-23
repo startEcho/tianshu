@@ -1,0 +1,24 @@
+server:
+  port: 8080
+
+spring:
+  application:
+    name: gateway-service
+
+services:
+  auth:
+    url: ${AUTH_SERVICE_URL:http://127.0.0.1:8083}
+  definition:
+    url: ${DEFINITION_SERVICE_URL:http://127.0.0.1:8081}
+  lab:
+    url: ${LAB_SERVICE_URL:http://127.0.0.1:8082}
+
+security:
+  jwt:
+    secret: ${JWT_SECRET:tianshu-jwt-secret-key-please-change-in-production-1234567890}
+    issuer: ${JWT_ISSUER:tianshu-platform}
+
+management:
+  zipkin:
+    tracing:
+      endpoint: ${ZIPKIN_ENDPOINT:http://127.0.0.1:9411/api/v2/spans}

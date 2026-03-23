@@ -15,6 +15,9 @@
     <name>TianShu Platform - Platform Services Parent</name>
 
     <modules>
+        <module>platform-security-common</module>
+        <module>auth-service</module>
+        <module>gateway-service</module>
         <module>vulnerability-definition-service</module>
         <module>lab-orchestration-service</module>
     </modules>

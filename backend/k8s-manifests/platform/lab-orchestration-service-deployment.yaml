@@ -1,3 +1,5 @@
+# Deploys lab-orchestration-service.
+# This service receives launch/terminate requests and creates per-lab Deployment/Service/Ingress resources.
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -18,28 +20,31 @@ spec:
       serviceAccountName: lab-orchestrator-sa # IMPORTANT: Use the ServiceAccount created above
       containers:
         - name: lab-orchestration-container
-          image: tianshuvuln/lab-orchestration-service:0.1.8 # Your image
-          imagePullPolicy: IfNotPresent # Or Always
+          image: tianshuvuln/lab-orchestration-service:3.0.0
+          imagePullPolicy: IfNotPresent
           ports:
-            - containerPort: 8082 # Port the app listens on
+            - containerPort: 8082
           env:
             - name: VULNERABILITY_DEFINITION_SERVICE_URL
-              # Use Kubernetes internal DNS name for service-to-service communication
-              # Format: http://<service-name>.<namespace>.svc.cluster.local:<port>
-              # Our vuln-def-service-svc is in 'default' namespace, service name 'vuln-def-service-svc', port 8081
               value: "http://vuln-def-service-svc.default.svc.cluster.local:8081"
-            - name: MINIKUBE_IP # This might not be strictly needed if URL construction is handled by frontend or ingress later
-              value: "192.168.49.2" # Or dynamically discovered if possible, or removed if frontend constructs full URL
-          # (Optional but recommended) Health Probes
-          # livenessProbe:
-          #   httpGet:
-          #     path: /actuator/health/liveness
-          #     port: 8082
-          #   initialDelaySeconds: 45
-          #   periodSeconds: 15
-          # readinessProbe:
-          #   httpGet:
-          #     path: /actuator/health/readiness
-          #     port: 8082
-          #   initialDelaySeconds: 30
-          #   periodSeconds: 10
+            - name: LAB_DB_URL
+              value: "jdbc:postgresql://host.minikube.internal:5432/tianshu_lab"
+            - name: LAB_DB_USERNAME
+              valueFrom:
+                secretKeyRef:
+                  name: tianshu-platform-secrets
+                  key: db-username
+            - name: LAB_DB_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: tianshu-platform-secrets
+                  key: db-password
+            - name: JWT_SECRET
+              valueFrom:
+                secretKeyRef:
+                  name: tianshu-platform-secrets
+                  key: jwt-secret
+            - name: ZIPKIN_ENDPOINT
+              value: "http://host.minikube.internal:9411/api/v2/spans"
+            - name: MINIKUBE_IP_ENV
+              value: "192.168.49.2"

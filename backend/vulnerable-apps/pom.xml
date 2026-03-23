@@ -16,5 +16,6 @@
 
     <modules>
         <module>vuln-sqli-example-java</module>
+        <module>vuln-stored-xss-guestbook-java</module>
     </modules>
 </project>

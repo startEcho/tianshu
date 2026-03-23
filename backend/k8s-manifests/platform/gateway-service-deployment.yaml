@@ -1,0 +1,37 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: gateway-service-deployment
+  namespace: default
+  labels:
+    app: gateway-service
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: gateway-service
+  template:
+    metadata:
+      labels:
+        app: gateway-service
+    spec:
+      containers:
+        - name: gateway-service-container
+          image: tianshuvuln/gateway-service:3.0.0
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 8080
+          env:
+            - name: AUTH_SERVICE_URL
+              value: "http://auth-service-svc.default.svc.cluster.local:8083"
+            - name: DEFINITION_SERVICE_URL
+              value: "http://vuln-def-service-svc.default.svc.cluster.local:8081"
+            - name: LAB_SERVICE_URL
+              value: "http://lab-orchestration-service-svc.default.svc.cluster.local:8082"
+            - name: JWT_SECRET
+              valueFrom:
+                secretKeyRef:
+                  name: tianshu-platform-secrets
+                  key: jwt-secret
+            - name: ZIPKIN_ENDPOINT
+              value: "http://host.minikube.internal:9411/api/v2/spans"

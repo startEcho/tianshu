@@ -1,0 +1,41 @@
+server:
+  port: 8082
+
+spring:
+  application:
+    name: lab-orchestration-service
+  datasource:
+    url: ${LAB_DB_URL:jdbc:postgresql://127.0.0.1:5432/tianshu_lab}
+    username: ${LAB_DB_USERNAME:tianshu}
+    password: ${LAB_DB_PASSWORD:tianshu_pwd}
+  rabbitmq:
+    host: ${RABBITMQ_HOST:127.0.0.1}
+    port: ${RABBITMQ_PORT:5672}
+    username: ${RABBITMQ_USERNAME:guest}
+    password: ${RABBITMQ_PASSWORD:guest}
+  flyway:
+    enabled: true
+
+security:
+  jwt:
+    secret: ${JWT_SECRET:tianshu-jwt-secret-key-please-change-in-production-1234567890}
+    issuer: ${JWT_ISSUER:tianshu-platform}
+
+platform:
+  ingress:
+    base-url: ${PLATFORM_INGRESS_BASE_URL:http://127.0.0.1:55552}
+  launch:
+    outbox:
+      fixed-delay: ${LAB_LAUNCH_OUTBOX_FIXED_DELAY:1000}
+
+vulnerability-definition-service:
+  # After switching fully to service discovery, this URL can be removed.
+  url: ${VULNERABILITY_DEFINITION_SERVICE_URL:http://localhost:8081}
+
+minikube:
+  ip: ${MINIKUBE_IP_ENV:192.168.49.2}
+
+management:
+  zipkin:
+    tracing:
+      endpoint: ${ZIPKIN_ENDPOINT:http://127.0.0.1:9411/api/v2/spans}

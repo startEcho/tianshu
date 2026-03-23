@@ -1,3 +1,5 @@
+# Cluster-internal service for lab-orchestration-service API.
+# Service chain: Ingress /orchestration/* -> this service -> orchestration pods.
 apiVersion: v1
 kind: Service
 metadata:

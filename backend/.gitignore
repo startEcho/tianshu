@@ -1,0 +1,7 @@
+docker-data/
+.env.infrastructure
+.codex-frontend-staging/
+.platform-runtime/
+scripts/api/.session.json
+logs/*.log
+!logs/.gitkeep
