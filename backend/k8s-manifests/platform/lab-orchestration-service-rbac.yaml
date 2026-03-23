@@ -1,3 +1,5 @@
+# RBAC permissions for lab-orchestration-service.
+# Grants namespaced CRUD access to Deployments, Services/Pods, and Ingresses for dynamic lab lifecycle management.
 apiVersion: v1
 kind: ServiceAccount
 metadata:

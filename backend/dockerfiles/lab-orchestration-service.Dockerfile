@@ -5,10 +5,8 @@ WORKDIR /build_workspace
 # Copy the entire project context (from tian-shu-platform root)
 COPY . .
 
-# Install root POM, then platform-services parent POM, then package the specific service
-RUN ./mvnw clean install -N
-RUN ./mvnw clean install -pl platform-services/pom.xml -am
-RUN ./mvnw package -pl platform-services/lab-orchestration-service -DskipTests
+# Package the requested service together with its reactor dependencies.
+RUN ./mvnw package -pl platform-services/lab-orchestration-service -am -DskipTests
 
 # Stage 2: Create the runtime image
 FROM eclipse-temurin:17-jre-jammy

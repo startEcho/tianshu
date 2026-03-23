@@ -44,18 +44,18 @@
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
-  <component name="GitHubPullRequestSearchHistory"><![CDATA[{
-  "lastFilter": {
-    "state": "OPEN",
-    "assignee": "echo-machile"
+  <component name="GitHubPullRequestSearchHistory">{
+  &quot;lastFilter&quot;: {
+    &quot;state&quot;: &quot;OPEN&quot;,
+    &quot;assignee&quot;: &quot;echo-machile&quot;
   }
-}]]></component>
-  <component name="GithubPullRequestsUISettings"><![CDATA[{
-  "selectedUrlAndAccountId": {
-    "url": "git@github.com:startEcho/tianshu.git",
-    "accountId": "6a59e234-4e10-4c33-9ffe-3fbbb5dcaa3c"
+}</component>
+  <component name="GithubPullRequestsUISettings">{
+  &quot;selectedUrlAndAccountId&quot;: {
+    &quot;url&quot;: &quot;git@github.com:startEcho/tianshu.git&quot;,
+    &quot;accountId&quot;: &quot;6a59e234-4e10-4c33-9ffe-3fbbb5dcaa3c&quot;
   }
-}]]></component>
+}</component>
   <component name="KubernetesApiPersistence">{}</component>
   <component name="KubernetesApiProvider">{
   &quot;isMigrated&quot;: true
@@ -95,6 +95,7 @@
     "RequestMappingsPanelWidth0": "75",
     "RequestMappingsPanelWidth1": "75",
     "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.git.unshallow": "true",
     "Spring Boot.LabOrchestrationServiceApplication.executor": "Run",
     "Spring Boot.VulnDeserializeCcAppApplication.executor": "Run",
     "Spring Boot.VulnSqliExampleJavaApplication.executor": "Run",
@@ -317,7 +318,8 @@
       <workItem from="1747188104621" duration="17038000" />
       <workItem from="1748255961189" duration="14210000" />
       <workItem from="1748353800013" duration="8405000" />
-      <workItem from="1751185914418" duration="21964000" />
+      <workItem from="1751185914418" duration="22401000" />
+      <workItem from="1751247592899" duration="74000" />
     </task>
     <task id="LOCAL-00001" summary="天枢漏洞平台 初始版本">
       <option name="closed" value="true" />

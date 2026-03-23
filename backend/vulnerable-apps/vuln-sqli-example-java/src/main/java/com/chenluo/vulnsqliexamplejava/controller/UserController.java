@@ -10,36 +10,53 @@ import org.springframework.web.bind.annotation.RequestParam;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * MVC controller for SQL injection lab pages.
+ *
+ * <p>The {@code /search} endpoint intentionally uses insecure SQL string concatenation for
+ * vulnerability demonstration.
+ */
 @Controller
 public class UserController {
 
     @Autowired
     private JdbcTemplate jdbcTemplate;
 
+    /**
+     * Renders home page and loads baseline user list.
+     *
+     * @param model Thymeleaf model
+     * @return view name
+     */
     @GetMapping("/")
     public String index(Model model) {
-        // Optionally load all users on the main page (safely)
         try {
             List<Map<String, Object>> users = jdbcTemplate.queryForList("SELECT id, username, info FROM users");
             model.addAttribute("users", users);
         } catch (Exception e) {
             model.addAttribute("error", "Error loading initial users: " + e.getMessage());
         }
-        return "index"; // Corresponds to src/main/resources/templates/index.html
+        return "index";
     }
 
+    /**
+     * Executes intentionally vulnerable query by username.
+     *
+     * @param username request query parameter
+     * @param model Thymeleaf model
+     * @return view name
+     */
     @GetMapping("/search")
     public String searchUser(@RequestParam(name = "username", required = false) String username, Model model) {
-        model.addAttribute("queryUsername", username); // Keep the searched username in the input field
+        model.addAttribute("queryUsername", username);
 
         if (username == null || username.trim().isEmpty()) {
             model.addAttribute("message", "Please enter a username to search.");
             return "index";
         }
 
-        // VULNERABLE SQL QUERY
+        // Intentionally vulnerable SQL construction for lab use.
         String sql = "SELECT id, username, info FROM users WHERE username = '" + username + "'";
-        // For demonstration, we print the query. In a real app, this is a security risk.
         System.out.println("Executing SQL: " + sql);
         model.addAttribute("executedSql", sql);
 
@@ -51,10 +68,10 @@ public class UserController {
                 model.addAttribute("results", result);
             }
         } catch (Exception e) {
-            // This might expose too much information in a real app, but useful for a靶场
             model.addAttribute("error", "Error executing query: " + e.getMessage());
-            e.printStackTrace(); // Log to console
+            e.printStackTrace();
         }
+
         return "index";
     }
 }

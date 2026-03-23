@@ -4,10 +4,42 @@ server:
 spring:
   application:
     name: lab-orchestration-service
+  datasource:
+    url: ${LAB_DB_URL:jdbc:postgresql://127.0.0.1:5432/tianshu_lab}
+    username: ${LAB_DB_USERNAME:tianshu}
+    password: ${LAB_DB_PASSWORD:tianshu_pwd}
+    driver-class-name: org.postgresql.Driver
+  rabbitmq:
+    host: ${RABBITMQ_HOST:127.0.0.1}
+    port: ${RABBITMQ_PORT:5672}
+    username: ${RABBITMQ_USERNAME:guest}
+    password: ${RABBITMQ_PASSWORD:guest}
+  jpa:
+    hibernate:
+      ddl-auto: validate
+    open-in-view: false
+  flyway:
+    enabled: true
+  jackson:
+    serialization:
+      write-dates-as-timestamps: false
+
+# Nacos centralized config is enabled via profile: nacos
+# See application-nacos.yaml and docs/upgrade-phase1.md
+
+security:
+  jwt:
+    secret: ${JWT_SECRET:tianshu-jwt-secret-key-please-change-in-production-1234567890}
+    issuer: ${JWT_ISSUER:tianshu-platform}
+    access-token-ttl: ${JWT_ACCESS_TOKEN_TTL:15m}
+    refresh-token-ttl: ${JWT_REFRESH_TOKEN_TTL:7d}
 
 platform:
   ingress:
-    base-url: http://localhost
+    base-url: ${PLATFORM_INGRESS_BASE_URL:http://127.0.0.1:55552}
+  launch:
+    outbox:
+      fixed-delay: ${LAB_LAUNCH_OUTBOX_FIXED_DELAY:1000}
 
 vulnerability-definition-service:
   url: ${VULNERABILITY_DEFINITION_SERVICE_URL:http://localhost:8081} # Default for local if env var not present
@@ -25,3 +57,26 @@ minikube:
 #         namespace: default # Or some other namespace where labs will be launched
 #       discovery:
 #         enabled: false # If not using Spring Cloud K8s for service discovery within this app
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,prometheus
+  endpoint:
+    health:
+      probes:
+        enabled: true
+  tracing:
+    sampling:
+      probability: 1.0
+  zipkin:
+    tracing:
+      endpoint: ${ZIPKIN_ENDPOINT:http://127.0.0.1:9411/api/v2/spans}
+
+logging:
+  file:
+    name: ${LOG_FILE:logs/lab-orchestration-service.log}
+  pattern:
+    console: "%d{yyyy-MM-dd HH:mm:ss.SSS} trace=%X{traceId:-} span=%X{spanId:-} %-5level [%thread] %logger{36} - %msg%n"
+    file: "%d{yyyy-MM-dd HH:mm:ss.SSS} trace=%X{traceId:-} span=%X{spanId:-} %-5level [%thread] %logger{36} - %msg%n"

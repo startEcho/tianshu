@@ -73,4 +73,25 @@
         </pluginManagement>
     </build>
 
+    <profiles>
+        <profile>
+            <id>nacos</id>
+            <properties>
+                <!-- Keep in profile to avoid affecting default build/runtime. -->
+                <spring-cloud-alibaba.version>2023.0.3.2</spring-cloud-alibaba.version>
+            </properties>
+            <dependencyManagement>
+                <dependencies>
+                    <dependency>
+                        <groupId>com.alibaba.cloud</groupId>
+                        <artifactId>spring-cloud-alibaba-dependencies</artifactId>
+                        <version>${spring-cloud-alibaba.version}</version>
+                        <type>pom</type>
+                        <scope>import</scope>
+                    </dependency>
+                </dependencies>
+            </dependencyManagement>
+        </profile>
+    </profiles>
+
 </project>

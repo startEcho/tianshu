@@ -1,52 +1,161 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --background: #07121a;
+  --background-strong: #040b10;
+  --panel: rgba(11, 25, 34, 0.86);
+  --panel-elevated: rgba(15, 32, 44, 0.92);
+  --panel-muted: rgba(255, 255, 255, 0.04);
+  --line: rgba(255, 255, 255, 0.08);
+  --text: #f6f8fb;
+  --muted: #8fa6b4;
+  --accent: #7ce2c4;
+  --accent-strong: #52bda0;
+  --signal: #ff9f5f;
+  --danger: #ff6d6d;
+  --shadow-soft: 0 24px 80px rgba(0, 0, 0, 0.28);
+  --shadow-bright: 0 18px 45px rgba(92, 193, 166, 0.18);
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+* {
+  box-sizing: border-box;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+html {
+  min-height: 100%;
+  background: var(--background-strong);
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  min-height: 100vh;
+  margin: 0;
+  color: var(--text);
+  font-family: "Avenir Next", "Segoe UI", "Helvetica Neue", sans-serif;
+  background:
+    radial-gradient(circle at 20% 20%, rgba(124, 226, 196, 0.11), transparent 28%),
+    radial-gradient(circle at 80% 0%, rgba(255, 159, 95, 0.14), transparent 24%),
+    linear-gradient(180deg, #07121a 0%, #091723 38%, #050b10 100%);
 }
 
-/* src/app/globals.css */
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0.18;
+  background-image:
+    linear-gradient(rgba(255, 255, 255, 0.045) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.045) 1px, transparent 1px);
+  background-size: 120px 120px;
+  mask-image: radial-gradient(circle at center, black 42%, transparent 94%);
+}
 
-/* Custom scrollbar for elements with .custom-scrollbar */
-.custom-scrollbar::-webkit-scrollbar {
-  width: 8px;
+a {
+  color: inherit;
+  text-decoration: none;
 }
-.custom-scrollbar::-webkit-scrollbar-track {
-  background: #f1f1f1;
-  border-radius: 10px;
+
+button,
+input,
+select {
+  font: inherit;
 }
-.custom-scrollbar::-webkit-scrollbar-thumb {
-  background: #cbd5e1; /* gray-300 */
-  border-radius: 10px;
+
+::selection {
+  color: #021511;
+  background: rgba(124, 226, 196, 0.85);
 }
-.custom-scrollbar::-webkit-scrollbar-thumb:hover {
-  background: #94a3b8; /* gray-500 */
+
+.site-shell {
+  position: relative;
+  display: flex;
+  min-height: 100vh;
+  flex-direction: column;
 }
-/* For Firefox (might need more specific targeting if not working) */
-.custom-scrollbar {
-  scrollbar-width: thin;
-  scrollbar-color: #cbd5e1 #f1f1f1;
+
+.eyebrow {
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.28em;
+  text-transform: uppercase;
+  color: var(--signal);
+}
+
+.hero-title {
+  font-family: "Iowan Old Style", "Palatino Linotype", "Book Antiqua", serif;
+}
+
+.surface {
+  border: 1px solid var(--line);
+  background: var(--panel);
+  box-shadow: var(--shadow-soft);
+  backdrop-filter: blur(18px);
+}
+
+.surface-elevated {
+  border: 1px solid rgba(124, 226, 196, 0.18);
+  background: var(--panel-elevated);
+  box-shadow: var(--shadow-soft), var(--shadow-bright);
+}
+
+.action-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.55rem;
+  border-radius: 999px;
+  padding: 0.75rem 1.2rem;
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: #03140f;
+  background: linear-gradient(135deg, var(--accent) 0%, #a5ffdf 100%);
+  box-shadow: var(--shadow-bright);
+  transition: transform 180ms ease, box-shadow 180ms ease, filter 180ms ease;
+}
+
+.action-button:hover {
+  transform: translateY(-1px);
+  filter: saturate(1.05);
+}
+
+.action-button.secondary {
+  color: var(--text);
+  background: rgba(255, 255, 255, 0.06);
+  box-shadow: none;
+}
+
+.input-field,
+.select-field,
+.textarea-field {
+  width: 100%;
+  border-radius: 1.25rem;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  background: rgba(4, 14, 22, 0.8);
+  color: var(--text);
+  padding: 0.95rem 1rem;
+  outline: none;
+  transition: border-color 160ms ease, box-shadow 160ms ease, transform 160ms ease;
+}
+
+.input-field:focus,
+.select-field:focus,
+.textarea-field:focus {
+  border-color: rgba(124, 226, 196, 0.55);
+  box-shadow: 0 0 0 4px rgba(124, 226, 196, 0.12);
+  transform: translateY(-1px);
+}
+
+.data-grid {
+  display: grid;
+  gap: 1.25rem;
+}
+
+@media (min-width: 768px) {
+  .data-grid.two {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .data-grid.three {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
 }
